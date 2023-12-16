@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:talktune/chatScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,9 +26,7 @@ class MyHomePage extends StatelessWidget {
 
   final String title;
 
-  void startConversation() {
-    print("Starting a conversation...");
-  }
+  void startConversation() {}
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,10 @@ class MyHomePage extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               // Add your action for this button
-              startConversation();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ChatScreen()),
+              );
             },
             child: const Text('Start a Conversation'),
           ),
@@ -57,7 +59,7 @@ class MyHomePage extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chat),
-            label: 'Chat',
+            label: 'Chats',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
