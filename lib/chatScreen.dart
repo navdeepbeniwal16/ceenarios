@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:talktune/networking/openai-service.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -9,20 +10,32 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   List<Map<String, dynamic>> messages = [];
+  final openAIService = OpenAIService(
+      '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'); // TODO: Fetch it from environment variables
 
-  void startChat() {
+  Future<void> startChat() async {
     // TODO: Need to integrate with backend services to establish a connection and keep it going until user clicks on stop
     // Dummy code
-    messages = [
-      {'text': 'Hello! How can I help you today?', 'isAgent': true},
-      {
-        'text':
-            'I have a question about my account, and I would very much appreciate your help',
-        'isAgent': false
-      },
-      {'text': 'Sure, I would be happy to help with that!', 'isAgent': true},
-      // Add more dummy messages here...
+    // messages = [
+    //   {'text': 'Hello! How can I help you today?', 'isAgent': true},
+    //   {
+    //     'text':
+    //         'I have a question about my account, and I would very much appreciate your help',
+    //     'isAgent': false
+    //   },
+    //   {'text': 'Sure, I would be happy to help with that!', 'isAgent': true},
+    //   // Add more dummy messages here...
+    // ];
+
+    // TODO: TBR - Testing integration with openAI chat api
+    List<Map<String, String>> messages = [
+      {'role': 'system', 'content': 'You are a helpful assistant.'},
+      {'role': 'user', 'content': 'Hello!'}
     ];
+
+    String response = await openAIService.getChatResponse(messages);
+    print('Printing response from OpenAI chat API');
+    print(response);
   }
 
   void stopChat() {
