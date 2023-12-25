@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:talktune/context-manager.dart';
+import 'package:talktune/models/message.dart';
 import 'package:talktune/networking/openai-service.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -10,30 +12,34 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   List<Map<String, dynamic>> messages = [];
+
   final openAIService = OpenAIService(
       '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'); // TODO: Fetch it from environment variables
+  var contextManager = ContextManager(contextWindowSize: 25);
+
+  @override
+  void initState() {
+    super.initState();
+
+    // TODO: Fetch the messages context from the database
+    // initialising the state of the context-manager
+    contextManager.pushMessage("user",
+        "Simulate the personality of Shaye, and act as an agent for conversation. Shaye is a 23-year-old Australian university student majoring in English Literature. She aspires to be a writer and is working on her first novel. Shaye enjoys intellectual discussions, has a sense of humor, and prefers old-school interests over modern pop culture.");
+    contextManager.pushMessage("user",
+        "Hey, isn't that 'The Secret History' by Donna Tartt? I've been meaning to read that.");
+    contextManager.pushMessage(
+        "system", "Oh, yes, it is. It's quite an interesting read.");
+    contextManager.pushMessage("user",
+        "I'm Navdeep. I enjoy a good novel now and then. What are your thoughts on it?");
+  }
 
   Future<void> startChat() async {
-    // TODO: Need to integrate with backend services to establish a connection and keep it going until user clicks on stop
-    // Dummy code
-    // messages = [
-    //   {'text': 'Hello! How can I help you today?', 'isAgent': true},
-    //   {
-    //     'text':
-    //         'I have a question about my account, and I would very much appreciate your help',
-    //     'isAgent': false
-    //   },
-    //   {'text': 'Sure, I would be happy to help with that!', 'isAgent': true},
-    //   // Add more dummy messages here...
-    // ];
+    List<Message> messages = contextManager.getMessages();
+    print('Messages formatted for request:');
+    print(messages);
 
-    // TODO: TBR - Testing integration with openAI chat api
-    List<Map<String, String>> messages = [
-      {'role': 'system', 'content': 'You are a helpful assistant.'},
-      {'role': 'user', 'content': 'Hello!'}
-    ];
-
-    String response = await openAIService.getChatResponse(messages);
+    List<Map<String, dynamic>> messagesJson = contextManager.messagesToJson();
+    String response = await openAIService.getChatResponse(messagesJson);
     print('Printing response from OpenAI chat API');
     print(response);
   }

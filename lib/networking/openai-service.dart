@@ -7,7 +7,7 @@ class OpenAIService {
 
   OpenAIService(this._apiKey);
 
-  Future<String> getChatResponse(List<Map<String, String>> messages) async {
+  Future<String> getChatResponse(List<Map<String, dynamic>> messages) async {
     try {
       final response = await http.post(
         Uri.parse(_baseURL),
@@ -17,7 +17,7 @@ class OpenAIService {
         },
         body: jsonEncode({
           'model': 'gpt-3.5-turbo',
-          'messages': messages,
+          'messages': messages, // Use the list of messages directly
         }),
       );
 
