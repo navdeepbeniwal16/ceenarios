@@ -8,6 +8,7 @@ import 'package:talktune/models/message.dart';
 import 'package:talktune/networking/openai-service.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -21,8 +22,9 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
+  // final String openAIServiceSk = dotenv.env['CHAT_API_SK']!;
   final openAIService = OpenAIService(
-      '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'); // TODO: Fetch it from environment variables
+      dotenv.env['CHAT_API_SK']!); // TODO: Fetch it from environment variables
   var contextManager = ContextManager(contextWindowSize: 100);
 
   Future<String> readPersonalityProfile() async {
