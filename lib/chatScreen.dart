@@ -1,4 +1,14 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:talktune/context-manager.dart';
+import 'package:talktune/models/message.dart';
+import 'package:talktune/networking/openai-service.dart';
+// ignore: depend_on_referenced_packages
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -9,20 +19,82 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   List<Map<String, dynamic>> messages = [];
+  final TextEditingController _messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
-  void startChat() {
-    // TODO: Need to integrate with backend services to establish a connection and keep it going until user clicks on stop
-    // Dummy code
-    messages = [
-      {'text': 'Hello! How can I help you today?', 'isAgent': true},
-      {
-        'text':
-            'I have a question about my account, and I would very much appreciate your help',
-        'isAgent': false
-      },
-      {'text': 'Sure, I would be happy to help with that!', 'isAgent': true},
-      // Add more dummy messages here...
-    ];
+  // final String openAIServiceSk = dotenv.env['CHAT_API_SK']!;
+  final openAIService = OpenAIService(
+      dotenv.env['CHAT_API_SK']!); // TODO: Fetch it from environment variables
+  var contextManager = ContextManager(contextWindowSize: 100);
+
+  Future<String> readPersonalityProfile() async {
+    final String filePath =
+        'assets/agents/julie.txt'; // Path to your text file within your assets
+    try {
+      final String contents = await rootBundle.loadString(filePath);
+      return contents;
+    } catch (e) {
+      throw Exception('Failed to load file: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    asyncInitState();
+  }
+
+  Future<void> asyncInitState() async {
+    try {
+      String personalitySetupPrompt = await readPersonalityProfile();
+      print('Agent Personality');
+      print(personalitySetupPrompt);
+      setState(() {
+        contextManager.pushMessage("user", personalitySetupPrompt);
+        messages = convertMessagesForDisplay();
+      });
+    } catch (e) {
+      print(e); // You may want to handle this error differently
+    }
+  }
+
+  List<Map<String, dynamic>> convertMessagesForDisplay() {
+    return contextManager.getMessages().map((message) {
+      return {
+        'isAgent': message.role == 'system',
+        'text': message.content,
+      };
+    }).toList();
+  }
+
+  Future<void> startChat() async {
+    // sendMessage(
+    //     "Ohh really? I feel like I should definetely give it a try. You sound very convincing. I'm Navdeep by the way.");
+  }
+
+  Future<void> sendMessage(String message) async {
+    setState(() {
+      contextManager.pushMessage('user', message);
+      messages = convertMessagesForDisplay();
+    });
+    List<Map<String, dynamic>> messagesFromContext =
+        contextManager.messagesToJson();
+
+    String response = await openAIService.getChatResponse(messagesFromContext);
+    print('Printing response from OpenAI chat API');
+    print(response);
+
+    setState(() {
+      contextManager.pushMessage('system', response);
+      messages = convertMessagesForDisplay();
+      Future.delayed(Duration(milliseconds: 100), () {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
+    });
   }
 
   void stopChat() {
@@ -49,55 +121,38 @@ class _ChatScreenState extends State<ChatScreen> {
           },
         ),
       ),
-      body: ChatBody(messages: messages),
-      bottomNavigationBar: Container(
-        height: 150, // Increased height
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [
-              bottomBarColor, // Color of the bottom bar
-              chatBodyColor, // Color of the chat body
-            ],
+      body: Column(
+        children: [
+          Expanded(
+              child:
+                  ChatBody(controller: _scrollController, messages: messages)),
+          Padding(
+            padding: const EdgeInsets.all(35.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                      hintText: 'Type a message',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.send),
+                  iconSize: 35.0,
+                  onPressed: () {
+                    sendMessage(_messageController.text);
+                    _messageController.clear();
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-        child: BottomAppBar(
-          color: Colors.transparent, // Make BottomAppBar background transparent
-          elevation: 0, // Remove shadow if not needed
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Icon(
-                  isAgentSpeaking
-                      ? Icons.headset_mic_outlined
-                      : Icons.headset_mic,
-                  color: isAgentSpeaking
-                      ? Theme.of(context).colorScheme.primary
-                      : Colors.black), // Icon indicating the agent
-              FloatingActionButton(
-                child: Text(!isChatActive ? "Start" : "Stop"), // Start button
-                onPressed: () {
-                  // Stop button action
-                  setState(() {
-                    isChatActive = !isChatActive;
-                    if (isChatActive) {
-                      startChat();
-                    } else {
-                      stopChat();
-                    }
-                  });
-                },
-              ),
-
-              Icon(!isAgentSpeaking ? Icons.mic_none_outlined : Icons.mic_none,
-                  color: !isAgentSpeaking
-                      ? Theme.of(context).colorScheme.primary
-                      : Colors.black), // Icon indicating the user
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }
@@ -105,7 +160,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class ChatBody extends StatefulWidget {
   final List<Map<String, dynamic>> messages;
-  const ChatBody({super.key, required this.messages});
+  final ScrollController controller;
+  const ChatBody({super.key, required this.messages, required this.controller});
 
   @override
   _ChatBodyState createState() => _ChatBodyState();
@@ -115,6 +171,7 @@ class _ChatBodyState extends State<ChatBody> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      controller: widget.controller,
       itemCount: widget.messages.length,
       itemBuilder: (context, index) {
         bool isAgent = widget.messages[index]['isAgent'];
