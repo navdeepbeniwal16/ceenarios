@@ -1,23 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import ResponsiveDrawer from "./ResponsiveDrawer";
+import ChatPage from "./ChatPage";
+// Plus any other imports you need
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ResponsiveDrawer />
+      <ChatPage />
+      {/* Any other components you wish to include */}
     </div>
   );
 }
