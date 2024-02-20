@@ -7,9 +7,9 @@ import OpenAIService from "./services/OpenAIService";
 
 // Initialize outside of the component to ensure they are singletons
 const contextManager = new ContextManager(100);
-const openAIService = new OpenAIService(
-  "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"
-);
+
+const openAIApiKey = "" + process.env.REACT_APP_CHAT_API_SK;
+const openAIService = new OpenAIService(openAIApiKey);
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
