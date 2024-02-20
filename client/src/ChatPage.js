@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, TextField, Button, Paper, Toolbar } from "@mui/material";
+import { Box, TextField, Button, Paper, AppBar, Toolbar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import Layout from "./Layout";
 import ContextManager from "./services/ContextManager";
@@ -62,14 +62,66 @@ const ChatPage = () => {
     scrollToBottom(); // Scroll to the bottom to show the new message
   };
 
+  // return (
+  //   <Layout>
+  //     <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
+  //       <Toolbar />{" "}
+  //       {/* This is necessary to offset the content below the AppBar */}
+  //       <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2, mt: 8 }}>
+  //         {" "}
+  //         {/* mt adjusted to push content below AppBar */}
+  //         {messages.map((message, index) => (
+  //           <Paper
+  //             key={index}
+  //             sx={{
+  //               p: 1.5,
+  //               maxWidth: "70%",
+  //               mb: 2, // Space added between messages
+  //               ml: message.role === "user" ? "auto" : "0",
+  //               mr: message.role === "assistant" ? "auto" : "0", // Changed from "system" to "assistant" if that's what you use
+  //               bgcolor: message.role === "user" ? "#e0f7fa" : "#fce4ec",
+  //               borderRadius: "20px",
+  //               // Space added between messages
+  //             }}
+  //           >
+  //             {message.content}
+  //           </Paper>
+  //         ))}
+  //         <div ref={messagesEndRef} />
+  //       </Box>
+  //       {/* Rest of the code remains the same */}
+  //       <Box
+  //         component="form"
+  //         sx={{ display: "flex", gap: 1, p: 2 }}
+  //         onSubmit={sendMessage}
+  //       >
+  //         <TextField
+  //           fullWidth
+  //           variant="outlined"
+  //           placeholder="Type a message..."
+  //           value={inputText}
+  //           onChange={(e) => setInputText(e.target.value)}
+  //           sx={{ borderRadius: "20px" }}
+  //         />
+  //         <Button
+  //           variant="contained"
+  //           color="primary"
+  //           type="submit"
+  //           sx={{ borderRadius: "20px" }}
+  //         >
+  //           <SendIcon />
+  //         </Button>
+  //       </Box>
+  //     </Box>
+  //   </Layout>
+  // );
+
   return (
     <Layout>
-      <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
-        <Toolbar />{" "}
-        {/* This is necessary to offset the content below the AppBar */}
-        <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2, mt: 8 }}>
-          {" "}
-          {/* mt adjusted to push content below AppBar */}
+      <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+        <AppBar position="static">{/* Your AppBar content here */}</AppBar>
+        <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
+          {/* Messages will be displayed here */}
           {messages.map((message, index) => (
             <Paper
               key={index}
@@ -89,12 +141,20 @@ const ChatPage = () => {
           ))}
           <div ref={messagesEndRef} />
         </Box>
-        {/* Rest of the code remains the same */}
         <Box
           component="form"
-          sx={{ display: "flex", gap: 1, p: 2 }}
+          sx={{
+            display: "flex",
+            gap: 1,
+            p: 2,
+            borderTop: "1px solid #ddd", // A border to separate the input from the messages
+            position: "sticky", // Sticky position for the input container
+            bottom: 0, // Stick to the bottom
+            background: "#fff", // Background color for the input container
+          }}
           onSubmit={sendMessage}
         >
+          {/* Input field and send button */}
           <TextField
             fullWidth
             variant="outlined"
