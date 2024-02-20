@@ -2,35 +2,64 @@ import React, { useState, useEffect, useRef } from "react";
 import { Box, TextField, Button, Paper, Toolbar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import Layout from "./Layout";
+import ContextManager from "./services/ContextManager";
+import OpenAIService from "./services/OpenAIService";
+
+// Initialize outside of the component to ensure they are singletons
+const contextManager = new ContextManager(100);
+const openAIService = new OpenAIService(
+  "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"
+);
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const messagesEndRef = useRef(null);
 
+  useEffect(() => {
+    console.log("From useEffect:");
+    console.log(messages);
+    scrollToBottom();
+  }, [messages]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const sendMessage = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
     if (inputText.trim() === "") return;
-    setMessages([...messages, { text: inputText, sender: "user" }]);
-    setInputText("");
-    // Simulate an agent response
-    setTimeout(() => {
+
+    const newUserMessage = { role: "user", content: inputText };
+    // Immediately update the UI with the user's message
+    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
+    setInputText(""); // Clear the input field
+
+    try {
+      // Push user message to context
+      contextManager.pushMessage("user", inputText);
+
+      // Get OpenAI response
+      console.log("Sending messages to OpenAI api...");
+      const agentResponse = await openAIService.getChatResponse(
+        contextManager.getMessages() // This should only get the messages meant for the agent
+      );
+      console.log("Response fetched from OpenAI api...");
+
+      // Push Agent response to context
+      contextManager.pushMessage("system", agentResponse);
+
+      // Update the UI with the agent's response, without re-adding the user message
       setMessages((prevMessages) => [
         ...prevMessages,
-        {
-          text: "I'm an agent response to '" + inputText + "'",
-          sender: "agent",
-        },
+        { role: "system", content: agentResponse },
       ]);
-    }, 1000);
+    } catch (error) {
+      // Handle error (e.g., show an alert to the user)
+      console.error("Failed to send message:", error);
+    }
+
+    scrollToBottom(); // Scroll to the bottom to show the new message
   };
 
   return (
@@ -48,14 +77,14 @@ const ChatPage = () => {
                 p: 1.5,
                 maxWidth: "70%",
                 mb: 2, // Space added between messages
-                ml: message.sender === "user" ? "auto" : "0",
-                mr: message.sender === "agent" ? "auto" : "0",
-                bgcolor: message.sender === "user" ? "#e0f7fa" : "#fce4ec",
+                ml: message.role === "user" ? "auto" : "0",
+                mr: message.role === "assistant" ? "auto" : "0", // Changed from "system" to "assistant" if that's what you use
+                bgcolor: message.role === "user" ? "#e0f7fa" : "#fce4ec",
                 borderRadius: "20px",
                 // Space added between messages
               }}
             >
-              {message.text}
+              {message.content}
             </Paper>
           ))}
           <div ref={messagesEndRef} />
