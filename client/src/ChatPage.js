@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { Box, TextField, Button, Paper, AppBar, Toolbar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import Layout from "./Layout";
-import ContextManager from "./services/ContextManager";
+import contextManager from "./services/ContextManager";
 import OpenAIService from "./services/OpenAIService";
 import ConversationEvaluation from "./ConversationEvaluation";
 
 // Initialize outside of the component to ensure they are singletons
-const contextManager = new ContextManager(100);
+// const contextManager = new ContextManager(100);
 
 const openAIApiKey = "" + process.env.REACT_APP_CHAT_API_SK;
 const openAIService = new OpenAIService(openAIApiKey);

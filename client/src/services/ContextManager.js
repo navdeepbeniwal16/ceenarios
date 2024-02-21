@@ -1,11 +1,16 @@
 class ContextManager {
+  static instance;
   messageCache = [];
   contextWindowSize;
   totalMessagesProcessed = 0;
 
-  // Sets the default context window size
+  // Private constructor to prevent direct construction calls with the `new` operator.
   constructor(contextWindowSize = 5) {
-    this.contextWindowSize = contextWindowSize;
+    if (!ContextManager.instance) {
+      this.contextWindowSize = contextWindowSize;
+      ContextManager.instance = this;
+    }
+    return ContextManager.instance;
   }
 
   // Method to push a new message into the cache
@@ -17,14 +22,13 @@ class ContextManager {
     // Ensure cache does not exceed the context window size
     if (this.messageCache.length > this.contextWindowSize) {
       this.messageCache.shift(); // Remove the oldest message
-
       // TODO: Ansynchrously push the message to the database
     }
   }
 
   // Method to get all messages in the cache
   getMessages() {
-    return this.messageCache; // Return a shallow copy of the cache
+    return [...this.messageCache]; // Return a shallow copy of the cache
   }
 
   // Method to configure the context window size
@@ -38,4 +42,8 @@ class ContextManager {
   }
 }
 
-export default ContextManager;
+// Ensuring a single instance
+const instance = new ContextManager();
+// Object.freeze(instance);
+
+export default instance;

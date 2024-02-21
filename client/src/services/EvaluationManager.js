@@ -1,4 +1,5 @@
 import OpenAIService from "./OpenAIService";
+// const OpenAIService = require("./OpenAIService");
 
 class EvaluationManager {
   constructor(apiKey) {
@@ -45,7 +46,7 @@ class EvaluationManager {
       const results = apiResponse;
       console.log("Response sent by the evaluator:");
       console.log(results);
-      return results;
+      return JSON.parse(results);
     } catch (error) {
       console.error("Error processing API response:", error);
       return null; // or handle as needed
@@ -54,3 +55,30 @@ class EvaluationManager {
 }
 
 export default EvaluationManager;
+
+// const apiKey = "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";
+// console.log("API Key: " + apiKey);
+// const evaluationManager = new EvaluationManager(apiKey);
+
+// const messages = [
+//   { role: "user", content: "Hello, how are you today?" },
+//   {
+//     role: "assistant",
+//     content: "I'm good, thank you! How can I assist you today?",
+//   },
+//   { role: "user", content: "Can you help me with my account issue?" },
+//   {
+//     role: "assistant",
+//     content: "Certainly! Can you provide me with your account number?",
+//   },
+//   {
+//     role: "user",
+//     content: "It's 123456. I'm having trouble accessing my account.",
+//   },
+//   {
+//     role: "assistant",
+//     content: "Let me check that for you. One moment, please.",
+//   },
+// ];
+
+// evaluationManager.evaluateConversation(messages); // TODO: Only uncomment for testing the service

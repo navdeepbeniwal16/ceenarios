@@ -10,7 +10,7 @@ const getColorForScore = (score) => {
 };
 
 const MetricFeedback = ({ metricName, score, feedbackPoints }) => {
-  const [showFeedback, setShowFeedback] = useState(true);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   return (
     <Paper
@@ -30,11 +30,12 @@ const MetricFeedback = ({ metricName, score, feedbackPoints }) => {
       </Typography>
       {showFeedback && (
         <Box>
-          {feedbackPoints.map((point, index) => (
-            <Typography key={index} variant="body2" sx={{ mb: 0.5 }}>
-              - {point}
-            </Typography>
-          ))}
+          {Array.isArray(feedbackPoints) &&
+            feedbackPoints.map((point, index) => (
+              <Typography key={index} variant="body2" sx={{ mb: 0.5 }}>
+                - {point}
+              </Typography>
+            ))}
         </Box>
       )}
       <Button size="small" onClick={() => setShowFeedback(!showFeedback)}>
