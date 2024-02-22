@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ResponsiveDrawer from "./ResponsiveDrawer";
 import ChatPage from "./ChatPage";
 import Footer from "./Footer";
@@ -20,16 +21,14 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      {/* <div>
+      <Router>
         <ResponsiveDrawer />
-        <ChatPage />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/chat/:characterName" element={<ChatPage />} />
+        </Routes>
         <Footer />
-      </div> */}
-      <div>
-        <ResponsiveDrawer />
-        <HomePage></HomePage>
-        <Footer />
-      </div>
+      </Router>
     </ThemeProvider>
   );
 }

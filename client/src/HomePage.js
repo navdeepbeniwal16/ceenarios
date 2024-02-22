@@ -18,7 +18,7 @@ import Layout from "./Layout";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // Dummy data for characters
   const characters = [
@@ -35,7 +35,7 @@ const HomePage = () => {
   ];
 
   const startConversation = (characterName) => {
-    // navigate(`/chat/${characterName}`);
+    navigate(`/chat/${characterName}`);
   };
 
   return (
@@ -80,6 +80,7 @@ const HomePage = () => {
                   }}
                 >
                   <Button
+                    variant="contained"
                     size="small"
                     color="primary"
                     onClick={() => startConversation(character.name)}
