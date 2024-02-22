@@ -25,12 +25,12 @@ const HomePage = () => {
     {
       name: "Celine",
       description:
-        "Celine is empathetic and great at understanding emotions, making her an excellent partner for discussions on sensitive topics.",
+        "Celine is an insightful and spirited woman, deeply passionate about life, love, and exploring the complexities of human connections.",
     },
     {
       name: "Jesse",
       description:
-        "Jesse is known for his analytical thinking and loves to engage in deep, thought-provoking conversations.",
+        "Jesse is a thoughtful and romantic guy, always curious about life and love, and not afraid to get deep in conversation.",
     },
   ];
 
