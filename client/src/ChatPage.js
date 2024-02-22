@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Box, TextField, Button, Paper, AppBar } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import Layout from "./Layout";
+import SendIcon from "@mui/icons-material/Send.js";
+import Layout from "./Layout.js";
 import contextManager from "./services/ContextManager";
-import OpenAIService from "./services/OpenAIService";
-import ConversationEvaluation from "./ConversationEvaluation";
+import ConversationEvaluation from "./ConversationEvaluation.js";
+import OpenAIAgentEmulatorService from "./services/OpenAIFTService.js";
 
-const openAIApiKey = "" + process.env.REACT_APP_CHAT_API_SK;
-const openAIService = new OpenAIService(openAIApiKey);
+const openAIFineTunedModelApiKey =
+  "" + process.env.REACT_APP_FINE_TUNED_MODEL_API_SK;
+const openAIFineTunedModelService = new OpenAIAgentEmulatorService(
+  openAIFineTunedModelApiKey
+);
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
@@ -39,8 +42,8 @@ const ChatPage = () => {
 
       // Get OpenAI response
       console.log("Sending messages to OpenAI api...");
-      const agentResponse = await openAIService.getChatResponse(
-        contextManager.getMessages() // This should only get the messages meant for the agent
+      const agentResponse = await openAIFineTunedModelService.getChatResponse(
+        contextManager.getMessagesForRequest() // This should only get the messages meant for the agent
       );
       console.log("Response fetched from OpenAI api...");
 
@@ -144,7 +147,7 @@ const ChatPage = () => {
             zIndex: 1, // Sets z-index lower than the overlapping component
           }}
         >
-          <ConversationEvaluation /> {/* Evaluation panel */}
+          <ConversationEvaluation />
         </Box>
       </Box>
     </Layout>

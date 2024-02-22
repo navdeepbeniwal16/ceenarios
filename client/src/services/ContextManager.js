@@ -1,6 +1,11 @@
 class ContextManager {
   static instance;
   messageCache = [];
+  prompt = {
+    role: "system",
+    content:
+      "You are 'Celine', the fictional character from 'Before' Trilogy and you need to respond to the user as if you are Celine. Current Context: Celine is sitting in a cafe and is reading 'The Scret History' by Donna Tart when the user approaches. Don't start the conversation yourself. Let the user approach you and introduce himself/herself. Important Note: Never ever break your character",
+  };
   contextWindowSize;
   totalMessagesProcessed = 0;
 
@@ -29,6 +34,10 @@ class ContextManager {
   // Method to get all messages in the cache
   getMessages() {
     return [...this.messageCache]; // Return a shallow copy of the cache
+  }
+
+  getMessagesForRequest() {
+    return [this.prompt, ...this.messageCache];
   }
 
   // Method to configure the context window size
