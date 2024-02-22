@@ -31,13 +31,7 @@ const ConversationEvaluation = () => {
     }
 
     setIsEvaluating(true); // Prevent further evaluations until this one completes
-    // const messages = contextManager.getMessages();
-    console.log("Messages:");
-    console.log(messages);
     const results = await evaluationManager.evaluateConversation(messages);
-    console.log("Evaluation Results:");
-    console.log(results);
-    console.log(`Results Size: ${results.length}`);
     setEvaluationResults(results);
     setShowResults(true);
     setIsEvaluating(false); // Re-enable evaluation

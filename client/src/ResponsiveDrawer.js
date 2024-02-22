@@ -10,9 +10,11 @@ import {
 import HomeIcon from "@mui/icons-material/Home";
 import ChatIcon from "@mui/icons-material/Chat";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useNavigate } from "react-router-dom";
 
 const ResponsiveDrawer = ({ open, onToggle }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -24,10 +26,15 @@ const ResponsiveDrawer = ({ open, onToggle }) => {
     setIsOpen(open);
   };
 
+  const handleNavigation = (path) => {
+    navigate(path); // Use the navigate function to change the route
+    onToggle(); // Optionally close the drawer after navigation
+  };
+
   const menuItems = [
-    { text: "Home", icon: <HomeIcon /> },
-    { text: "Chats", icon: <ChatIcon /> },
-    { text: "Profile", icon: <AccountCircleIcon /> },
+    { text: "Home", icon: <HomeIcon />, path: "/" },
+    { text: "Chat", icon: <ChatIcon />, path: "/chat/Celine" },
+    // Add additional menu items here if needed
   ];
 
   return (
@@ -39,8 +46,11 @@ const ResponsiveDrawer = ({ open, onToggle }) => {
     >
       <List>
         {menuItems.map((item, index) => (
-          <ListItem button key={index} onClick={onToggle}>
-            {/* Navigation logic will go here */}
+          <ListItem
+            button
+            key={index}
+            onClick={() => handleNavigation(item.path)}
+          >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.text} />
           </ListItem>

@@ -41,7 +41,7 @@ const MetricFeedback = ({ metricName, score, feedbackPoints }) => {
         value={score * 10}
         sx={{
           mb: 1,
-          height: 10,
+          height: 3,
           borderRadius: 5,
           [`& .${linearProgressClasses.bar}`]: {
             backgroundColor: getColorForScore(score), // Apply color to progress bar
