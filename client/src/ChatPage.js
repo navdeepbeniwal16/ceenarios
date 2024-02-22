@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, TextField, Button, Paper, AppBar, Toolbar } from "@mui/material";
+import { Box, TextField, Button, Paper, AppBar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import Layout from "./Layout";
 import contextManager from "./services/ContextManager";
 import OpenAIService from "./services/OpenAIService";
 import ConversationEvaluation from "./ConversationEvaluation";
-
-// Initialize outside of the component to ensure they are singletons
-// const contextManager = new ContextManager(100);
 
 const openAIApiKey = "" + process.env.REACT_APP_CHAT_API_SK;
 const openAIService = new OpenAIService(openAIApiKey);
@@ -64,18 +61,28 @@ const ChatPage = () => {
   };
 
   return (
-    <Layout>
-      <Box sx={{ display: "flex", height: "100vh" }}>
+    <Layout sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", height: "80vh" }}>
         <Box
           sx={{
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
             borderRight: "2px solid #e0e0e0", // Add a border line here
+            width: "70%",
+            ml: 2,
+            mt: 2,
+            maxWidth: "70%",
           }}
         >
           <AppBar position="static">{/* Your AppBar content here */}</AppBar>
-          <Box sx={{ flexGrow: 1, overflowY: "auto", p: 2 }}>
+          <Box
+            sx={{
+              overflowY: "auto",
+              p: 2,
+              flexGrow: 1, // This will make this box grow and push the form to the bottom
+            }}
+          >
             {/* Messages will be displayed here */}
             {messages.map((message, index) => (
               <Paper
@@ -86,8 +93,9 @@ const ChatPage = () => {
                   mb: 2, // Space added between messages
                   ml: message.role === "user" ? "auto" : "0",
                   mr: message.role === "assistant" ? "auto" : "0",
-                  bgcolor: message.role === "user" ? "#e0f7fa" : "#fce4ec",
+                  bgcolor: message.role === "user" ? "#3B71CA" : "#ffffff",
                   borderRadius: "20px",
+                  color: message.role === "user" ? "#fff" : "#000",
                 }}
               >
                 {message.content}
@@ -102,7 +110,7 @@ const ChatPage = () => {
               gap: 1,
               p: 2,
               borderTop: "1px solid #ddd",
-              position: "sticky",
+              // position: "sticky",
               bottom: 0,
               background: "#fff",
             }}
@@ -111,22 +119,33 @@ const ChatPage = () => {
             <TextField
               fullWidth
               variant="outlined"
-              placeholder="Type a message..."
+              placeholder="Type your message here..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               sx={{ borderRadius: "20px" }}
             />
             <Button
-              variant="contained"
+              variant="outlined"
               color="primary"
               type="submit"
-              sx={{ borderRadius: "20px" }}
+              sx={{ borderRadius: "10px" }}
             >
               <SendIcon />
             </Button>
           </Box>
         </Box>
-        <ConversationEvaluation /> {/* Evaluation panel */}
+        <Box
+          sx={{
+            width: "30%",
+            ml: 2,
+            mt: 2,
+            maxWidth: "30%",
+            overflowY: "auto", // Allows vertical scrolling
+            zIndex: 1, // Sets z-index lower than the overlapping component
+          }}
+        >
+          <ConversationEvaluation /> {/* Evaluation panel */}
+        </Box>
       </Box>
     </Layout>
   );

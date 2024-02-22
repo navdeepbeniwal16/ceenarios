@@ -1,15 +1,36 @@
 import React from "react";
 import ResponsiveDrawer from "./ResponsiveDrawer";
 import ChatPage from "./ChatPage";
-// Plus any other imports you need
+import Footer from "./Footer";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import HomePage from "./HomePage";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h6: {
+      fontSize: "1.25rem", // 20px
+    },
+    body2: {
+      fontSize: "0.875rem", // 14px for body text
+    },
+  },
+});
 
 function App() {
   return (
-    <div>
-      <ResponsiveDrawer />
-      <ChatPage />
-      {/* Any other components you wish to include */}
-    </div>
+    <ThemeProvider theme={theme}>
+      {/* <div>
+        <ResponsiveDrawer />
+        <ChatPage />
+        <Footer />
+      </div> */}
+      <div>
+        <ResponsiveDrawer />
+        <HomePage></HomePage>
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 }
 

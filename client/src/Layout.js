@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Chat App
+            TalkTune
           </Typography>
         </Toolbar>
       </AppBar>
