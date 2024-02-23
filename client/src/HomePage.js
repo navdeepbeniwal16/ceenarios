@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigate = useNavigate();
 
-  // Dummy data for characters
+  // Data for characters // TODO: Need to store this data in a file or in the database
   const characters = [
     {
       name: "Celine",
@@ -63,7 +63,7 @@ const HomePage = () => {
               >
                 <CardContent
                   sx={{
-                    flexGrow: 1, // Allowing content to expand and push actions to the bottom
+                    flexGrow: 1,
                     overflow: "auto",
                   }}
                 >
@@ -76,7 +76,7 @@ const HomePage = () => {
                 </CardContent>
                 <CardActions
                   sx={{
-                    marginTop: "auto", // Pushing actions to the bottom
+                    marginTop: "auto",
                   }}
                 >
                   <Button

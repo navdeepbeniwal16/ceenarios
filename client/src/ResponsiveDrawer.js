@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import ChatIcon from "@mui/icons-material/Chat";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 
 const ResponsiveDrawer = ({ open, onToggle }) => {
@@ -27,23 +26,18 @@ const ResponsiveDrawer = ({ open, onToggle }) => {
   };
 
   const handleNavigation = (path) => {
-    navigate(path); // Use the navigate function to change the route
-    onToggle(); // Optionally close the drawer after navigation
+    navigate(path);
+    onToggle();
   };
 
   const menuItems = [
     { text: "Home", icon: <HomeIcon />, path: "/" },
     { text: "Chat", icon: <ChatIcon />, path: "/chat/Celine" },
-    // Add additional menu items here if needed
+    // TODO: Add additional menu items here...
   ];
 
   return (
-    <Drawer
-      anchor="left"
-      open={open}
-      onClose={onToggle}
-      // ... [rest of the props]
-    >
+    <Drawer anchor="left" open={open} onClose={onToggle}>
       <List>
         {menuItems.map((item, index) => (
           <ListItem

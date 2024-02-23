@@ -18,8 +18,7 @@ const ChatPage = () => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    console.log("From useEffect:");
-    console.log(messages);
+    // scroll to the botton of the chats when new messages are added to messages array
     scrollToBottom();
   }, [messages]);
 
@@ -32,35 +31,34 @@ const ChatPage = () => {
     if (inputText.trim() === "") return;
 
     const newUserMessage = { role: "user", content: inputText };
-    // Immediately update the UI with the user's message
+
+    // update the UI with the user's message
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
     setInputText(""); // Clear the input field
 
     try {
-      // Push user message to context
+      // Push user message into context
       contextManager.pushMessage("user", inputText);
 
-      // Get OpenAI response
-      console.log("Sending messages to OpenAI api...");
+      // Get response from custom agent
       const agentResponse = await openAIFineTunedModelService.getChatResponse(
-        contextManager.getMessagesForRequest() // This should only get the messages meant for the agent
+        contextManager.getMessagesForRequest()
       );
-      console.log("Response fetched from OpenAI api...");
 
-      // Push Agent response to context
+      // Push agent response to context
       contextManager.pushMessage("system", agentResponse);
 
-      // Update the UI with the agent's response, without re-adding the user message
+      // Update the UI with the agent's response
       setMessages((prevMessages) => [
         ...prevMessages,
         { role: "system", content: agentResponse },
       ]);
     } catch (error) {
-      // Handle error (e.g., show an alert to the user)
+      // TODO: Handle error (e.g., show an alert to the user)
       console.error("Failed to send message:", error);
     }
 
-    scrollToBottom(); // Scroll to the bottom to show the new message
+    scrollToBottom();
   };
 
   return (
@@ -71,29 +69,29 @@ const ChatPage = () => {
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
-            borderRight: "2px solid #e0e0e0", // Add a border line here
+            borderRight: "2px solid #e0e0e0",
             width: "70%",
             ml: 2,
             mt: 2,
             maxWidth: "70%",
           }}
         >
-          <AppBar position="static">{/* Your AppBar content here */}</AppBar>
+          <AppBar position="static"></AppBar>
           <Box
             sx={{
               overflowY: "auto",
               p: 2,
-              flexGrow: 1, // This will make this box grow and push the form to the bottom
+              flexGrow: 1, // To make this box grow and push the form to the bottom
             }}
           >
-            {/* Messages will be displayed here */}
+            {/* iterating over the messages to display in sequence */}
             {messages.map((message, index) => (
               <Paper
                 key={index}
                 sx={{
                   p: 1.5,
                   maxWidth: "70%",
-                  mb: 2, // Space added between messages
+                  mb: 2,
                   ml: message.role === "user" ? "auto" : "0",
                   mr: message.role === "assistant" ? "auto" : "0",
                   bgcolor: message.role === "user" ? "#3B71CA" : "#ffffff",
@@ -113,7 +111,6 @@ const ChatPage = () => {
               gap: 1,
               p: 2,
               borderTop: "1px solid #ddd",
-              // position: "sticky",
               bottom: 0,
               background: "#fff",
             }}
@@ -143,8 +140,8 @@ const ChatPage = () => {
             ml: 2,
             mt: 2,
             maxWidth: "30%",
-            overflowY: "auto", // Allows vertical scrolling
-            zIndex: 1, // Sets z-index lower than the overlapping component
+            overflowY: "auto", // To allows vertical scrolling
+            zIndex: 1, // To avoid overlapping context by setting z-index lower than the overlapping component
           }}
         >
           <ConversationEvaluation />

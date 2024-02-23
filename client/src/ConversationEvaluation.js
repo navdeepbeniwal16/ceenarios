@@ -4,12 +4,12 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MetricFeedback from "./MetricFeedback"; // Adjust the import path as necessary
-import EvaluationManager from "./services/EvaluationManager"; // Adjust the import path as necessary
+import MetricFeedback from "./MetricFeedback";
+import EvaluationManager from "./services/EvaluationManager";
 import contextManager from "./services/ContextManager";
 import { ReactComponent as ChatEvaluationIcon } from "./assets/chat-evaluation.svg";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { green, yellow, red, blue } from "@mui/material/colors";
+import { blue } from "@mui/material/colors";
 import { ReactComponent as MissingChatsIcon } from "./assets/missing_chats.svg";
 
 const apiKey = process.env.REACT_APP_CHAT_API_SK;
@@ -19,21 +19,21 @@ const ConversationEvaluation = () => {
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [noMessages, setNoMessages] = useState(false);
-  const [isEvaluating, setIsEvaluating] = useState(false); // Track evaluation status
+  const [isEvaluating, setIsEvaluating] = useState(false);
 
   const handleEvaluate = async () => {
     const messages = contextManager.getMessages();
     if (messages.length === 0) {
       setNoMessages(true); // Set noMessages to true if there are no messages
-      setIsEvaluating(false); // Also, stop the evaluating indicator
-      return; // Exit the function early
+      setIsEvaluating(false); // To stop the evaluating icon
+      return;
     }
+    setIsEvaluating(true); // To show progress circle until evaluation is done
 
-    setIsEvaluating(true); // Prevent further evaluations until this one completes
     const results = await evaluationManager.evaluateConversation(messages);
     setEvaluationResults(results);
     setShowResults(true);
-    setIsEvaluating(false); // Re-enable evaluation
+    setIsEvaluating(false);
   };
 
   return (
@@ -43,14 +43,13 @@ const ConversationEvaluation = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center", // Centers horizontally in a column flex container
-            justifyContent: "center", // Adjust this as needed for vertical centering
-            textAlign: "center", // Centers the text inside the Typography component
-            gap: 1, // Adds space between items, adjust as needed
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            gap: 1,
           }}
         >
           {noMessages ? (
-            // Display the missing chats icon and message when there are no messages
             <>
               <MissingChatsIcon
                 style={{ width: "300px", height: "300px", marginBottom: "8px" }}
@@ -112,7 +111,7 @@ const ConversationEvaluation = () => {
           >
             Evaluate
           </Button>
-          {/* Conditionally render the CircularProgress here */}
+          {/* Render the CircularProgress if evaluation is in progress */}
           {isEvaluating && <CircularProgress size={24} />}
         </Box>
       ) : (
@@ -132,7 +131,7 @@ const ConversationEvaluation = () => {
             <Button
               variant="outlined"
               onClick={() => {
-                handleEvaluate(); // Ensure button is enabled when going for re-evaluation
+                handleEvaluate();
               }}
             >
               Re-evaluate

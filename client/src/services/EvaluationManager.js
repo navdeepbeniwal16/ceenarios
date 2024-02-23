@@ -14,12 +14,12 @@ class EvaluationManager {
         { role: "user", content: prompt },
       ]);
 
-      // Step 3: Process the response
+      // Process the response
       const evaluationResults = this.processApiResponse(apiResponse);
       return evaluationResults;
     } catch (error) {
       console.error("Evaluation error:", error);
-      throw error; // Rethrow or handle as needed
+      throw error;
     }
   }
 
@@ -38,16 +38,14 @@ class EvaluationManager {
       }`;
   }
 
+  // Method to parse Chat API response into a JSON object
   processApiResponse(apiResponse) {
-    // Assuming apiResponse is a string that needs to be parsed into JSON
     try {
       const results = apiResponse;
-      console.log("Response sent by the evaluator:");
-      console.log(results);
       return JSON.parse(results);
     } catch (error) {
       console.error("Error processing API response:", error);
-      return null; // or handle as needed
+      return null;
     }
   }
 }

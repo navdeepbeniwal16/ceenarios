@@ -18,7 +18,7 @@ const getColorForScore = (score) => {
   return red[500]; // Red for scores below 5
 };
 
-// Dictionary for user-friendly metric names
+// Dictionary for metric display names
 const metricNameDictionary = {
   sentimentAnalysis: "Sentiment",
   engagementLevel: "Engagement Level",
@@ -29,7 +29,7 @@ const metricNameDictionary = {
 
 const MetricFeedback = ({ metricName, score, feedbackPoints }) => {
   const [showFeedback, setShowFeedback] = useState(false);
-  const userFriendlyName = metricNameDictionary[metricName] || metricName; // Fallback to the original key if not found
+  const userFriendlyName = metricNameDictionary[metricName] || metricName; // use key name if display name for it not found
 
   return (
     <Paper variant="outlined" sx={{ mb: 2, p: 2 }}>
@@ -44,7 +44,7 @@ const MetricFeedback = ({ metricName, score, feedbackPoints }) => {
           height: 3,
           borderRadius: 5,
           [`& .${linearProgressClasses.bar}`]: {
-            backgroundColor: getColorForScore(score), // Apply color to progress bar
+            backgroundColor: getColorForScore(score),
           },
         }}
       />
