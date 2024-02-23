@@ -1,26 +1,30 @@
-# Stage 1: Build the Flutter web application
-FROM cirrusci/flutter:latest as build
+# Use the latest Node.js image
+FROM node:latest
 
-# Set the working directory
-WORKDIR /app
+# Create app directory
+WORKDIR /usr/src/app
 
-# Copy the Flutter project files to the container
-COPY . .
+# Install server dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY server/package*.json ./server/
+RUN npm install --prefix server
 
-# Get Flutter dependencies
-RUN flutter pub get
+# Bundle server source
+COPY server/ ./server/
 
-# Build the Flutter web application
-RUN flutter build web
+# Install client dependencies
+COPY client/package*.json ./client/
+RUN npm install --prefix client
 
-# Stage 2: Serve the Flutter web application using Nginx
-FROM nginx:alpine
+# Build client
+COPY client/ ./client/
+RUN npm run build --prefix client
 
-# Copy the Flutter web build output to the Nginx server
-COPY --from=build /app/build/web /usr/share/nginx/html
+# Expose the port the app runs on
+EXPOSE 3000
 
-# Expose port 80
-EXPOSE 80
+# Define environment variable for API key if needed
 
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Start server
+CMD [ "node", "./server/app.js" ]
