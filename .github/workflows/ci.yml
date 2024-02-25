@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      REACT_APP_CHAT_API_SK: ${{ secrets.CHAT_API_SK }}
+      REACT_APP_FINE_TUNED_MODEL_API_SK: ${{ secrets.FINE_TUNED_MODEL_API_SK }}
+
     steps:
       - uses: actions/checkout@v3
 
@@ -20,6 +24,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
+        env:
+          REACT_APP_CHAT_API_SK: ${{ secrets.CHAT_API_SK }}
+          REACT_APP_FINE_TUNED_MODEL_API_SK: ${{ secrets.FINE_TUNED_MODEL_API_SK }}
         uses: docker/build-push-action@v5
         with:
           push: true
