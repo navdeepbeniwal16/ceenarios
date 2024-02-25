@@ -1,4 +1,4 @@
-name: Node_CI/CD Docker Image CI
+name: Talktune Image CI
 
 on:
   push:
