@@ -18,12 +18,17 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Debug environment variables
+        run: |
+          echo "REACT_APP_CHAT_API_SK=${REACT_APP_CHAT_API_SK}"
+          echo "REACT_APP_FINE_TUNED_MODEL_API_SK=${REACT_APP_FINE_TUNED_MODEL_API_SK}"
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/talktune:latest
-          secret-envs: |
+          build-args: |
             REACT_APP_CHAT_API_SK=${{ secrets.CHAT_API_SK }}
             REACT_APP_FINE_TUNED_MODEL_API_SK=${{ secrets.FINE_TUNED_MODEL_API_SK }}
