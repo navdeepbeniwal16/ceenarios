@@ -13,7 +13,7 @@ jobs:
       - name: Delete Old docker container
         run: sudo docker rm -f talktune-container || true
       - name: Remove Old Docker image
-        run: sudo docker rmi navdeep16/talktune:latest
+        run: sudo docker rmi --force navdeep16/talktune:latest
       - name: Pull Docker image
         run: sudo docker pull navdeep16/talktune:latest
       - name: Run Docker Container
