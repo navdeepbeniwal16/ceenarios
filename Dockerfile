@@ -17,6 +17,11 @@ COPY server/ ./server/
 COPY client/package*.json ./client/
 RUN npm install --prefix client
 
+# ...
+ARG REACT_APP_CHAT_API_SK
+ARG REACT_APP_FINE_TUNED_MODEL_API_SK
+# ...
+
 # Build client
 COPY client/ ./client/
 RUN npm run build --prefix client
