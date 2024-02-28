@@ -8,6 +8,9 @@ import OpenAIAgentEmulatorService from "./services/OpenAIFTService.js";
 
 const openAIFineTunedModelApiKey =
   "" + process.env.REACT_APP_FINE_TUNED_MODEL_API_SK;
+console.log('Fine Tuning API Key');
+console.log(openAIFineTunedModelApiKey);
+
 const openAIFineTunedModelService = new OpenAIAgentEmulatorService(
   openAIFineTunedModelApiKey
 );
