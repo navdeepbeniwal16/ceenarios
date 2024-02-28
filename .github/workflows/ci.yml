@@ -21,8 +21,8 @@ jobs:
           
       - name: Debug secret variables
         run: |
-          echo "REACT_APP_CHAT_API_SK=${secrets.CHAT_API_SK}"
-          echo "REACT_APP_FINE_TUNED_MODEL_API_SK=${secrets.FINE_TUNED_MODEL_API_SK}"
+          echo "REACT_APP_CHAT_API_SK=${{ secrets.CHAT_API_SK }}"
+          echo "REACT_APP_FINE_TUNED_MODEL_API_SK=${{ secrets.FINE_TUNED_MODEL_API_SK }}"
 
       - name: Build and push
         uses: docker/build-push-action@v5
