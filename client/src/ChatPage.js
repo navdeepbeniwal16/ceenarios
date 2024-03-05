@@ -6,8 +6,11 @@ import {
   Paper,
   AppBar,
   Typography,
+  Chip,
+  Avatar,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send.js";
+import girlAvatar from "./assets/girl.webp";
 import Layout from "./Layout.js";
 import contextManager from "./services/ContextManager";
 import ConversationEvaluation from "./ConversationEvaluation.js";
@@ -112,6 +115,15 @@ const ChatPage = () => {
           }}
         >
           <AppBar position="static"></AppBar>
+          <Chip
+            label="Celine"
+            avatar={<Avatar alt="Girl Avatar Icon" src={girlAvatar} />}
+            sx={{
+              width: "8%",
+              maxWidth: "15%",
+              alignSelf: "center",
+            }}
+          ></Chip>
           <Box
             sx={{
               overflowY: "auto",
