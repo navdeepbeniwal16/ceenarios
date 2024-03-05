@@ -8,7 +8,7 @@ const Footer = () => {
         {"Copyright © TalkTune "}
         {new Date().getFullYear()}
         {" | "}
-        {"Designed & Developed by Navdeep Beniwal "}
+        {"Developed by Navdeep Beniwal "}
         {" | "}
         <Link
           color="inherit"
