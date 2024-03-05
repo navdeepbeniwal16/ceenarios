@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, TextField, Button, Paper, AppBar } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Paper,
+  AppBar,
+  Typography,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send.js";
 import Layout from "./Layout.js";
 import contextManager from "./services/ContextManager";
@@ -13,9 +20,36 @@ const openAIFineTunedModelService = new OpenAIAgentEmulatorService(
   openAIFineTunedModelApiKey
 );
 
+const useFetchContextData = () => {
+  const [contextData, setContextData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (contextManager.context) {
+      setContextData(contextManager.context);
+      setIsLoading(false);
+    } else {
+      // Wait for contextManager.context to be populated
+      const interval = setInterval(() => {
+        if (contextManager.context) {
+          setContextData(contextManager.context);
+          setIsLoading(false);
+          clearInterval(interval);
+        }
+      }, 1000); // Check every second
+
+      // Clean up the interval
+      return () => clearInterval(interval);
+    }
+  }, [contextManager.context]); // React to changes in contextManager.context
+
+  return { contextData, isLoading };
+};
+
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
+  const { contextData, isLoading } = useFetchContextData();
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -85,6 +119,33 @@ const ChatPage = () => {
               flexGrow: 1, // To make this box grow and push the form to the bottom
             }}
           >
+            {/* Context Card */}
+            {!isLoading && contextData && (
+              <Paper
+                sx={{
+                  p: 2,
+                  mb: 2,
+                  border: "1px solid #dcdcdc",
+                  borderRadius: "10px",
+                  boxShadow: "none",
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{ fontWeight: "bold", color: "#5a5a5a" }}
+                >
+                  {contextData.userContext.location}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ mt: 1, color: "#5a5a5a" }}
+                  gutterBottom
+                >
+                  {contextData.userContext.activity}.{" "}
+                  {contextData.userContext.interaction}
+                </Typography>
+              </Paper>
+            )}
             {/* iterating over the messages to display in sequence */}
             {messages.map((message, index) => (
               <Paper

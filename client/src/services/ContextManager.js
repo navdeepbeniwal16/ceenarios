@@ -1,11 +1,10 @@
+import OpenAIService from "./OpenAIService";
+
 class ContextManager {
   static instance;
+  openAIService;
   messageCache = []; // to store messages in the current conversation
-  prompt = {
-    role: "system",
-    content:
-      "You are 'Celine', the fictional character from 'Before' Trilogy and you need to respond to the user as if you are Celine. Current Context: Celine is sitting in a cafe and is reading 'The Scret History' by Donna Tart when the user approaches. Don't start the conversation yourself. Let the user approach you and introduce himself/herself. Important Note: Never ever break your character",
-  }; // TODO: Need to store the prompt value somewhere in a dictionary, or better generate it using OpenAI's Chat api
+  context;
   contextWindowSize;
   totalMessagesProcessed = 0;
 
@@ -13,6 +12,13 @@ class ContextManager {
   constructor(contextWindowSize = 5) {
     if (!ContextManager.instance) {
       this.contextWindowSize = contextWindowSize;
+
+      // Initialise openAIService...
+      const apiKey = process.env.REACT_APP_CHAT_API_SK;
+      this.openAIService = new OpenAIService(apiKey);
+
+      // Generating random context
+      this.generateRandomContext();
       ContextManager.instance = this;
     }
     return ContextManager.instance;
@@ -38,7 +44,78 @@ class ContextManager {
 
   // Method to get all messages including the prompt message to feed to the Chat API
   getMessagesForRequest() {
-    return [this.prompt, ...this.messageCache];
+    const jsonContext = JSON.stringify(this.context.promptContext);
+    // Note: No need to replace '/' with '', since '/' does not need to be escaped in JSON
+
+    const promptMessage = {
+      role: "system",
+      content: `You are 'Celine', the fictional character from 'Before' Trilogy and you need to respond to the user as if you are Celine. Current Context: ${jsonContext}`,
+    };
+
+    console.log("Prompt Message:");
+    console.log(promptMessage);
+    return [promptMessage, ...this.messageCache];
+  }
+
+  preparePromptForConextGeneration() {
+    return `
+    To make the prompt more dynamic and encourage a wider variety of locations, you can add more specificity to the instructions and emphasize the randomness of the location selection. Here's a revised version of the prompt:
+    
+    Generate a random context for a real-world-like interaction between two people who have never met 
+    before, focusing on everyday activities. Randomly select a location. Ensure the user is the active 
+    participant and initiates the interaction. Provide the context response in JSON format 
+    (with no other text) with the following structure:
+    
+    Sample JSON response
+    {
+      "promptContext": {
+        "location": "Randomly selected location",
+        "activity": "Specific activity related to the location",
+        "interaction": "Description of how the user initiates interaction with the other person"
+      },
+      "userContext": {
+        "location": "Same as promptContext location",
+        "activity": "User's perspective of the activity starting with something like 'you...'",
+        "interaction": "User's perspective of initiating the interaction"
+      }
+    }
+    
+    Ensure the promptContext and userContext fields provide detailed and specific descriptions 
+    of the environment, activities, and interaction initiation. The location should be randomly 
+    selected for each response to create a more dynamic and real-world-like scenario.`;
+  }
+
+  // Method to parse Chat API response into a JSON object
+  processApiResponse(apiResponse) {
+    try {
+      const results = apiResponse;
+      return JSON.parse(results);
+    } catch (error) {
+      console.error("Error processing API response into JSON:", error);
+      return null;
+    }
+  }
+
+  // returns an object with a "userContext" & "promptContext"
+  async generateRandomContext() {
+    // Prepare the prompt
+    const prompt = this.preparePromptForConextGeneration();
+
+    // Send the prompt to the OpenAI Chat API
+    try {
+      const apiResponse = await this.openAIService.getChatResponse([
+        { role: "user", content: prompt },
+      ]);
+
+      // Process the response
+      const generatedContext = this.processApiResponse(apiResponse);
+      this.context = generatedContext;
+      console.log("Context");
+      console.log(JSON.parse(JSON.stringify(this.context)));
+    } catch (error) {
+      console.error("Error generating random context:", error);
+      throw error;
+    }
   }
 
   // Method to configure the context window size
