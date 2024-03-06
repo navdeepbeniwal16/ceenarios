@@ -23,19 +23,25 @@ const HomePage = () => {
   // Data for characters // TODO: Need to store this data in a file or in the database
   const characters = [
     {
+      id: "1",
       name: "Celine",
+      gender: "female",
       description:
         "Celine is an insightful and spirited woman, deeply passionate about life, love, and exploring the complexities of human connections.",
+      fineTuneAgentId: "ft:gpt-3.5-turbo-1106:personal::8uyNtcdU",
     },
     {
+      id: "2",
       name: "Jesse",
+      gender: "male",
       description:
         "Jesse is a thoughtful and romantic guy, always curious about life and love, and not afraid to get deep in conversation.",
+      fineTuneAgentId: "ft:gpt-3.5-turbo-1106:personal::8uyNtcdU",
     },
   ];
 
-  const startConversation = (characterName) => {
-    navigate(`/chat/${characterName}`);
+  const startConversation = (character) => {
+    navigate(`/chat/${character.name}`, { state: { character } });
   };
 
   return (
@@ -83,7 +89,7 @@ const HomePage = () => {
                     variant="contained"
                     size="small"
                     color="primary"
-                    onClick={() => startConversation(character.name)}
+                    onClick={() => startConversation(character)}
                   >
                     Start Conversation
                   </Button>

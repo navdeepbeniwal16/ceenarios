@@ -1,4 +1,5 @@
 import React from "react";
+import { Box } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ResponsiveDrawer from "./ResponsiveDrawer";
 import ChatPage from "./ChatPage";
@@ -23,11 +24,17 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <ResponsiveDrawer />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/chat/:characterName" element={<ChatPage />} />
-        </Routes>
-        <Footer />
+        <Box
+          sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+        >
+          <Box component="main" sx={{ flexGrow: 1 }}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/chat/:characterName" element={<ChatPage />} />
+            </Routes>
+          </Box>
+          <Footer sx={{ mt: "auto" }} />
+        </Box>
       </Router>
     </ThemeProvider>
   );

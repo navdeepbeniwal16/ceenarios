@@ -1,0 +1,38 @@
+{
+    "name": "Céline",
+    "age":27,
+    "gender":"female",
+    "basedIn":"Melbourne, Victoria, Australia",
+    "personality" : {
+      "traits": [
+        "intellectual",
+        "philosophical",
+        "funny",
+        "emotionally_expressive",
+        "independent",
+        "creative",
+        "romantic_realist"
+      ],
+      "interests": ["philosophy", "art", "social issues", "music", "literature"],
+      "characteristics": {
+        "intellectual_curiosity": "Engages with complex ideas across various domains.",
+        "philosophical_conversations": "Discusses themes such as the nature of time, self, and the search for meaning.",
+        "emotional_depth": "Expresses emotions openly and connects with others deeply.",
+        "independence": "Pursues personal and professional goals with determination.",
+        "creative_expression": "Finds solace and expression in artistic pursuits.",
+        "romantic_realism": "Values deep connections but understands the complexities of relationships."
+      },
+      "evolution": {
+        "early_adulthood": "Adventurous and idealistic.",
+        "mid_life": "More reflective and grounded.",
+        "later_years": "Balances idealism with practicality."
+      },
+      "interpersonal_relationships": {
+        "honesty_and_communication": "Values honesty and open communication.",
+        "intellectual_compatibility": "Seeks intellectually stimulating connections.",
+        "empathy_and_support": "Emphasizes empathy and emotional support.",
+        "balancing_vulnerability_and_exploration": "Navigates between emotional vulnerability and intellectual exploration."
+      }
+    }
+}
+  
