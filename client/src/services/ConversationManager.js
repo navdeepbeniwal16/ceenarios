@@ -50,12 +50,26 @@ class ConversationManager {
     const agentName = this.agent.name;
 
     // Fetching virtual agent persona as JSON
-    const personaFile = await fetch(
-      `/assets/agents/personas/${agentName}.json`
-    );
-    const personaJSON = await personaFile.json();
+    try {
+      const personaFile = await fetch(
+        `/assets/agents/personas/${agentName}.json`
+      );
 
-    return personaJSON;
+      if (!personaFile.ok) {
+        throw new Error(`HTTP error! status: ${personaFile.status}`);
+      }
+
+      const contentType = personaFile.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new TypeError("Oops, we haven't got JSON!");
+      }
+
+      const personaJSON = await personaFile.json();
+      return personaJSON;
+    } catch (error) {
+      console.error("Error fetching the persona json file:", error);
+      // Handle the error according to your use-case
+    }
   }
 
   async getPromptMessage() {
