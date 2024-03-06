@@ -5,10 +5,9 @@ import {
   LinearProgress,
   Button,
   Paper,
-  Chip,
   linearProgressClasses,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { green, yellow, red } from "@mui/material/colors";
 
 // Helper function to determine the color for the progress bar based on the score
@@ -33,7 +32,10 @@ const MetricFeedback = ({ metricName, score, feedbackPoints }) => {
 
   return (
     <Paper variant="outlined" sx={{ mb: 2, p: 2 }}>
-      <Typography variant="h6" sx={{ mb: 1, fontFamily: "Roboto" }}>
+      <Typography
+        variant="body1"
+        sx={{ mb: 1, fontFamily: "Roboto", fontWeight: "bold" }}
+      >
         {userFriendlyName}
       </Typography>
       <LinearProgress
@@ -48,25 +50,20 @@ const MetricFeedback = ({ metricName, score, feedbackPoints }) => {
           },
         }}
       />
-      <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-        <Chip
-          label={`${score}/10`}
-          color="primary"
-          sx={{ fontWeight: "bold", marginRight: 1 }}
-        />
-      </Box>
       {showFeedback && (
         <Box>
           {Array.isArray(feedbackPoints) &&
             feedbackPoints.map((point, index) => (
               <Typography
+                display="flex"
+                alignItems="top"
                 key={index}
                 variant="body2"
                 sx={{ mb: 0.5, fontFamily: "Roboto" }}
               >
-                <CheckCircleIcon
+                <ChevronRightIcon
                   key={index}
-                  sx={{ color: green[500], fontSize: 20, marginRight: 0.5 }}
+                  sx={{ fontSize: 20, marginRight: 0.5 }}
                 />
                 {point}
               </Typography>

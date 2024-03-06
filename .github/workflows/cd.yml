@@ -1,0 +1,20 @@
+name: Talktune CD Pipeline
+on: 
+  workflow_run:
+    workflows: ["Talktune Image CI"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Delete Old docker container
+        run: sudo docker rm -f talktune-container || true
+      - name: Remove Old Docker image
+        run: sudo docker rmi --force navdeep16/talktune:latest
+      - name: Pull Docker image
+        run: sudo docker pull navdeep16/talktune:latest
+      - name: Run Docker Container
+        run: sudo docker run -d -p 80:3000 --name talktune-container navdeep16/talktune:latest
