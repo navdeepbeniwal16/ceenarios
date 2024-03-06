@@ -2,6 +2,19 @@ const express = require("express");
 const path = require("path");
 const app = express();
 
+app.use((req, res, next) => {
+  if (req.path.endsWith(".json")) {
+    res.type("application/json");
+  }
+  next();
+});
+
+// Serve JSON files from the assets directory
+app.use(
+  "/assets",
+  express.static(path.join(__dirname, "../client/build/assets"))
+);
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "../client/build")));
 
