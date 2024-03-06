@@ -47,7 +47,7 @@ class ConversationManager {
   }
 
   async getAgentPersonaAsJson() {
-    const agentName = this.agent.name;
+    const agentName = (this.agent.name + "").toLowerCase();
 
     // Fetching virtual agent persona as JSON
     try {
