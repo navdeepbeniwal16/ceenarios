@@ -18,7 +18,7 @@ import PersonPin from "@mui/icons-material/PersonPin.js";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack.js";
 import girlAvatar from "./assets/girl.webp";
 import boyAvatar from "./assets/boy.webp";
-import Layout from "./Layout.js";
+import PageWrapper from "./PageWrapper.js";
 
 import ConversationManager from "./services/ConversationManager.js";
 import ConversationEvaluation from "./ConversationEvaluation.js";
@@ -119,7 +119,7 @@ const ChatPage = () => {
   };
 
   return (
-    <Layout sx={{ display: "flex" }}>
+    <PageWrapper sx={{ display: "flex" }}>
       <Box sx={{ display: "flex", height: "80vh" }}>
         <Box
           sx={{
@@ -295,7 +295,7 @@ const ChatPage = () => {
           <ConversationEvaluation conversationManager={conversationManager} />
         </Box>
       </Box>
-    </Layout>
+    </PageWrapper>
   );
 };
 
