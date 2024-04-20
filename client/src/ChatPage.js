@@ -18,7 +18,7 @@ import PersonPin from "@mui/icons-material/PersonPin.js";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack.js";
 import girlAvatar from "./assets/girl.webp";
 import boyAvatar from "./assets/boy.webp";
-import Layout from "./Layout.js";
+import PageWrapper from "./PageWrapper.js";
 
 import ConversationManager from "./services/ConversationManager.js";
 import ConversationEvaluation from "./ConversationEvaluation.js";
@@ -119,7 +119,7 @@ const ChatPage = () => {
   };
 
   return (
-    <Layout sx={{ display: "flex" }}>
+    <PageWrapper sx={{ display: "flex" }}>
       <Box sx={{ display: "flex", height: "80vh" }}>
         <Box
           sx={{
@@ -242,7 +242,7 @@ const ChatPage = () => {
                   mb: 2,
                   ml: message.role === "user" ? "auto" : "0",
                   mr: message.role === "assistant" ? "auto" : "0",
-                  bgcolor: message.role === "user" ? "#3B71CA" : "#ffffff",
+                  bgcolor: message.role === "user" ? "violet.main" : "#ffffff",
                   borderRadius: "20px",
                   color: message.role === "user" ? "#fff" : "#000",
                 }}
@@ -274,7 +274,7 @@ const ChatPage = () => {
             />
             <Button
               variant="outlined"
-              color="primary"
+              color="violet"
               type="submit"
               sx={{ borderRadius: "10px" }}
             >
@@ -295,7 +295,7 @@ const ChatPage = () => {
           <ConversationEvaluation conversationManager={conversationManager} />
         </Box>
       </Box>
-    </Layout>
+    </PageWrapper>
   );
 };
 
