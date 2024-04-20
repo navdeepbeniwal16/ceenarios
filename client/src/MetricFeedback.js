@@ -70,7 +70,11 @@ const MetricFeedback = ({ metricName, score, feedbackPoints }) => {
             ))}
         </Box>
       )}
-      <Button size="small" onClick={() => setShowFeedback(!showFeedback)}>
+      <Button
+        size="small"
+        color="gray"
+        onClick={() => setShowFeedback(!showFeedback)}
+      >
         {showFeedback ? "Hide Feedback" : "Show Feedback"}
       </Button>
     </Paper>

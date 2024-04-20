@@ -5,7 +5,7 @@ const Footer = () => {
   function Copyright() {
     return (
       <Typography variant="body2" color="text.secondary">
-        {"Copyright © TalkTune "}
+        {"Copyright © Ceenarios "}
         {new Date().getFullYear()}
         {" | "}
         {"Developed by Navdeep Beniwal "}
@@ -28,6 +28,7 @@ const Footer = () => {
         py: 3,
         px: 2,
         mt: "auto",
+        minHeight: "200px",
         backgroundColor: (theme) =>
           theme.palette.mode === "light"
             ? theme.palette.grey[200]

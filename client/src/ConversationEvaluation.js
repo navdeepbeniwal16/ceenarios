@@ -72,31 +72,31 @@ const ConversationEvaluation = (props) => {
               <List>
                 <ListItem disablePadding>
                   <ListItemIcon>
-                    <CheckCircleIcon sx={{ color: blue[600] }} />
+                    <CheckCircleIcon sx={{ color: "gray.light" }} />
                   </ListItemIcon>
                   <ListItemText primary="Sentiment" />
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemIcon>
-                    <CheckCircleIcon sx={{ color: blue[600] }} />
+                    <CheckCircleIcon sx={{ color: "gray.light" }} />
                   </ListItemIcon>
                   <ListItemText primary="Engagement Level" />
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemIcon>
-                    <CheckCircleIcon sx={{ color: blue[600] }} />
+                    <CheckCircleIcon sx={{ color: "gray.light" }} />
                   </ListItemIcon>
                   <ListItemText primary="Grammatical Correctness" />
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemIcon>
-                    <CheckCircleIcon sx={{ color: blue[600] }} />
+                    <CheckCircleIcon sx={{ color: "gray.light" }} />
                   </ListItemIcon>
                   <ListItemText primary="Conversation Depth" />
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemIcon>
-                    <CheckCircleIcon sx={{ color: blue[600] }} />
+                    <CheckCircleIcon sx={{ color: "gray.light" }} />
                   </ListItemIcon>
                   <ListItemText primary="Politeness and Formality" />
                 </ListItem>
@@ -106,6 +106,7 @@ const ConversationEvaluation = (props) => {
 
           <Button
             variant="contained"
+            color="violet"
             onClick={handleEvaluate}
             disabled={isEvaluating}
           >
@@ -131,6 +132,7 @@ const ConversationEvaluation = (props) => {
             {isEvaluating && <CircularProgress size={24} />}
             <Button
               variant="outlined"
+              color="violet"
               onClick={() => {
                 handleEvaluate();
               }}

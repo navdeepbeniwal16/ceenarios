@@ -1,11 +1,24 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ResponsiveDrawer from "./ResponsiveDrawer";
 import ChatPage from "./ChatPage";
 import Footer from "./Footer";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  createTheme,
+  ThemeProvider,
+  alpha,
+  getContrastRatio,
+} from "@mui/material/styles";
 import HomePage from "./HomePage";
+import AppAppBar from "./AppAppBar";
+
+const violetBase = "#6C2AE8"; // "#7F00FF";
+const violetMain = alpha(violetBase, 0.7);
+
+const grayBase = "#808080"; // This should be adjusted to your specific gray
+const grayMain = grayBase;
+const grayLight = alpha(grayBase, 0.5);
+const grayDark = alpha(grayBase, 0.9);
 
 const theme = createTheme({
   typography: {
@@ -17,24 +30,35 @@ const theme = createTheme({
       fontSize: "0.875rem", // 14px
     },
   },
+  palette: {
+    violet: {
+      main: violetMain,
+      light: alpha(violetBase, 0.5),
+      dark: alpha(violetBase, 0.9),
+      contrastText:
+        getContrastRatio(violetMain, "#fff") > 4.5 ? "#fff" : "#111",
+    },
+    gray: {
+      main: grayMain,
+      light: grayLight,
+      dark: grayDark,
+      contrastText: getContrastRatio(grayMain, "#fff") > 4.5 ? "#fff" : "#111",
+    },
+  },
 });
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <ResponsiveDrawer />
-        <Box
-          sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
-        >
-          <Box component="main" sx={{ flexGrow: 1 }}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/chat/:characterName" element={<ChatPage />} />
-            </Routes>
-          </Box>
-          <Footer sx={{ mt: "auto" }} />
+        <AppAppBar></AppAppBar>
+        <Box component="main" sx={{ flexGrow: 1 }}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/chat/:characterName" element={<ChatPage />} />
+          </Routes>
         </Box>
+        <Footer />
       </Router>
     </ThemeProvider>
   );
