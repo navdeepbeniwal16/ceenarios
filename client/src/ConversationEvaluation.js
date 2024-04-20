@@ -132,6 +132,7 @@ const ConversationEvaluation = (props) => {
             {isEvaluating && <CircularProgress size={24} />}
             <Button
               variant="outlined"
+              color="violet"
               onClick={() => {
                 handleEvaluate();
               }}

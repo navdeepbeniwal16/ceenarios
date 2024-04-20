@@ -242,7 +242,7 @@ const ChatPage = () => {
                   mb: 2,
                   ml: message.role === "user" ? "auto" : "0",
                   mr: message.role === "assistant" ? "auto" : "0",
-                  bgcolor: message.role === "user" ? "#3B71CA" : "#ffffff",
+                  bgcolor: message.role === "user" ? "violet.main" : "#ffffff",
                   borderRadius: "20px",
                   color: message.role === "user" ? "#fff" : "#000",
                 }}
@@ -274,7 +274,7 @@ const ChatPage = () => {
             />
             <Button
               variant="outlined"
-              color="primary"
+              color="violet"
               type="submit"
               sx={{ borderRadius: "10px" }}
             >
