@@ -41,6 +41,25 @@ const HomePage = () => {
     },
   ];
 
+  const categories = [
+    {
+      id: "1",
+      name: "Job Interviews",
+      icon: "",
+      description:
+        "Prepare for success and practice your responses to common interview questions based on real job descriptions.",
+      actionVerb: "Begin",
+    },
+    {
+      id: "2",
+      name: "Meet Strangers",
+      icon: "",
+      description:
+        "Celine is an insightful and spirited woman, deeply passionate about life, love, and exploring the complexities of human connections.",
+      actionVerb: "Discover",
+    },
+  ];
+
   const startConversation = (character) => {
     navigate(`/chat/${character.name}`, { state: { character } });
   };
@@ -58,13 +77,23 @@ const HomePage = () => {
           your communication skills. Receive feedback on different aspects of
           your conversations and see how you're doing.
         </Typography>
+        <Typography
+          variant="h5"
+          sx={{
+            marginBottom: "20px",
+          }}
+        >
+          {" "}
+          {/* Adjusted margin */}
+          Categories
+        </Typography>
         <Grid
           id="catalogue"
           container
           spacing={3}
           sx={{ marginBottom: "40px" }}
         >
-          {characters.map((character, index) => (
+          {categories.map((category, index) => (
             <Grid item xs={12} sm={6} key={index}>
               <Card
                 sx={{
@@ -80,10 +109,10 @@ const HomePage = () => {
                   }}
                 >
                   <Typography gutterBottom variant="h5" component="div">
-                    {character.name}
+                    {category.name}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {character.description}
+                    {category.description}
                   </Typography>
                 </CardContent>
                 <CardActions
@@ -95,9 +124,9 @@ const HomePage = () => {
                     variant="contained"
                     size="small"
                     color="violet"
-                    onClick={() => startConversation(character)}
+                    onClick={() => navigate("/job-details-upload")}
                   >
-                    Start Conversation
+                    {category.actionVerb}
                   </Button>
                 </CardActions>
               </Card>
