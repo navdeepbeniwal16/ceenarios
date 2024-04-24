@@ -11,6 +11,8 @@ import {
 } from "@mui/material/styles";
 import HomePage from "./HomePage";
 import AppAppBar from "./AppAppBar";
+import JobDetailsUpload from "./pages/JobDetailsUpload";
+import PageWrapper from "./PageWrapper";
 
 const violetBase = "#6C2AE8"; // "#7F00FF";
 const violetMain = alpha(violetBase, 0.7);
@@ -52,12 +54,19 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <AppAppBar></AppAppBar>
-        <Box component="main" sx={{ flexGrow: 1 }}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/chat/:characterName" element={<ChatPage />} />
-          </Routes>
-        </Box>
+        <PageWrapper>
+          <Box component="main" sx={{ flexGrow: 1 }}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/chat/:characterName" element={<ChatPage />} />
+              <Route
+                path="/jobs/description-upload"
+                element={<JobDetailsUpload />}
+              />
+            </Routes>
+          </Box>
+        </PageWrapper>
+
         <Footer />
       </Router>
     </ThemeProvider>

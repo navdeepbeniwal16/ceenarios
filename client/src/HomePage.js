@@ -49,6 +49,7 @@ const HomePage = () => {
       description:
         "Prepare for success and practice your responses to common interview questions based on real job descriptions.",
       actionVerb: "Begin",
+      navigateTo: "/jobs/description-upload",
     },
     {
       id: "2",
@@ -57,6 +58,7 @@ const HomePage = () => {
       description:
         "Celine is an insightful and spirited woman, deeply passionate about life, love, and exploring the complexities of human connections.",
       actionVerb: "Discover",
+      navigateTo: "#",
     },
   ];
 
@@ -124,7 +126,7 @@ const HomePage = () => {
                     variant="contained"
                     size="small"
                     color="violet"
-                    onClick={() => navigate("/job-details-upload")}
+                    onClick={() => navigate(category.navigateTo)}
                   >
                     {category.actionVerb}
                   </Button>
