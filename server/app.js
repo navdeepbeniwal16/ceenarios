@@ -1,6 +1,9 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const bodyParser = require("body-parser");
+
+const jobRoutes = require("./routes/jobs.js");
 
 app.use((req, res, next) => {
   if (req.path.endsWith(".json")) {
@@ -17,6 +20,11 @@ app.use(
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.use(bodyParser.json());
+
+// Redirect to custom routes
+app.use("/scenarios/jobs", jobRoutes);
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
