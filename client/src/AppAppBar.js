@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Link, useNavigate } from "react-router-dom";
 
 const logoStyle = {
   width: "140px",
@@ -20,6 +21,7 @@ const logoStyle = {
 
 function AppAppBar() {
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -74,11 +76,14 @@ function AppAppBar() {
                 px: 0,
               }}
             >
-              <img
-                src={"./assets/app_title_logo_bg_removed.png"}
-                style={logoStyle}
-                alt="logo of sitemark"
-              />
+              <Link to="/">
+                <img
+                  src={"./assets/app_title_logo_bg_removed.png"}
+                  style={logoStyle}
+                  alt="logo of sitemark"
+                />
+              </Link>
+
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
                 <MenuItem
                   onClick={() => scrollToSection("catalogue")}
