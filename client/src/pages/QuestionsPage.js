@@ -18,7 +18,9 @@ const QuestionsPage = () => {
   const questions = location.state.questions;
 
   const navigateToPracticePage = (questionId, question) => {
-    navigate(`/jobs/questions/:${questionId}`);
+    navigate(`/jobs/questions/:${questionId}`, {
+      state: { question: question },
+    });
   };
 
   const questionsList = questions.map((question, index) => (
