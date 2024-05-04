@@ -13,6 +13,8 @@ import HomePage from "./HomePage";
 import AppAppBar from "./AppAppBar";
 import JobDetailsUpload from "./pages/JobDetailsUpload";
 import PageWrapper from "./PageWrapper";
+import QuestionsPage from "./pages/QuestionsPage";
+import PracticeInterviewPage from "./pages/PracticeInterviewPage";
 
 const violetBase = "#6C2AE8"; // "#7F00FF";
 const violetMain = alpha(violetBase, 0.7);
@@ -62,6 +64,11 @@ function App() {
               <Route
                 path="/jobs/description-upload"
                 element={<JobDetailsUpload />}
+              />
+              <Route path="/jobs/questions" element={<QuestionsPage />} />
+              <Route
+                path="/jobs/questions/:questionId"
+                element={<PracticeInterviewPage />}
               />
             </Routes>
           </Box>
