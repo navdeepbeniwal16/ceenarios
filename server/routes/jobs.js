@@ -55,7 +55,7 @@ router.get("/", (req, res, next) => {
 router.post("/", async (req, res) => {
   const { company, role, description } = req.body;
 
-  if (!company || !role || !description) {
+  if (!company || !role) {
     return res
       .status(400)
       .send("All fields are required: company, role, and description.");
