@@ -3,16 +3,34 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import VoiceRecordingTab from "../components/VoiceRecordingTab";
+import InterviewService from "../services/scenarios/interviewService";
 
 const PracticeInterviewPage = () => {
   const location = useLocation();
   const question = location.state.question;
   const [audioUrl, setAudioUrl] = useState(null);
+  const [transcription, setTranscription] = useState(null);
 
   const handleVoiceRecordingSubmit = (audioUrl) => {
     console.log("handleVoiceRecordingSubmit is called...");
     setAudioUrl(audioUrl);
+    getAudioTranscripts(audioUrl);
   };
+
+  const getAudioTranscripts = async (audioUrl) => {
+    const audioBlob = await urlToBlob(audioUrl);
+    const audioTranscripts = await InterviewService.fetchAudioTranscription(
+      audioBlob
+    );
+    console.log("Transcripts:", audioTranscripts);
+    setTranscription(audioTranscripts);
+  };
+
+  async function urlToBlob(url) {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return blob;
+  }
 
   return (
     <Container component="main" maxWidth="lg">
@@ -54,7 +72,7 @@ const PracticeInterviewPage = () => {
         </Typography>
       </Paper>
       <Box sx={{ display: "flex", height: "60vh" }}>
-        <Typography>This is a box....</Typography>
+        {transcription && <Typography>{transcription.text}</Typography>}
       </Box>
 
       <Box
