@@ -67,6 +67,44 @@ class InterviewService {
       return null;
     }
   }
+
+  static async fetchAudioResponseFeedback(
+    questionText,
+    audioResponseBlob,
+    companyName,
+    jobRole,
+    jobDescription
+  ) {
+    const formData = new FormData();
+    formData.append("file", audioResponseBlob, "audio-file.ogg");
+    formData.append("questionText", questionText);
+    formData.append("companyName", companyName);
+    formData.append("jobRole", jobRole);
+    formData.append("jobDescription", jobDescription);
+
+    try {
+      const response = await fetch("/scenarios/jobs/evaluate-response-audio", {
+        method: "POST",
+        headers: {},
+        body: formData,
+      });
+
+      if (response.status !== 200) {
+        throw new Error("Request unsuccessful: " + response);
+      }
+
+      const data = await response.json();
+      if (!data.results) {
+        throw new Error("Results not found in response payload: " + response);
+      }
+
+      const resultsObj = data.results;
+      return resultsObj;
+    } catch (error) {
+      console.error("Failed to fetch audio response feedback:", error);
+      return null;
+    }
+  }
 }
 
 export default InterviewService;

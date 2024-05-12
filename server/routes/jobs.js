@@ -286,10 +286,14 @@ router.post(
   },
   evaluateResponse,
   (req, res, next) => {
-    const results = req.results;
+    const feedback = req.results;
+    const transcription = req.transcription;
     res.json({
       message: "Question response successfully evaluated",
-      results: results,
+      results: {
+        feedback: feedback,
+        transcription: transcription,
+      },
     });
   }
 );

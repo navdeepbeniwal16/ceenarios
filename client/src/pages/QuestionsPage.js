@@ -16,10 +16,19 @@ const QuestionsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const questions = location.state.questions;
+  const companyName = location.state.companyName;
+  const jobRole = location.state.jobRole;
+  const jobDescription = location.state.jobDescription;
 
   const navigateToPracticePage = (questionId, question) => {
-    navigate(`/jobs/questions/:${questionId}`, {
-      state: { question: question },
+    navigate(`/jobs/questions/${questionId}`, {
+      state: {
+        questions: questions,
+        questionId: questionId,
+        companyName: companyName,
+        jobRole: jobRole,
+        jobDescription: jobDescription,
+      },
     });
   };
 
@@ -31,10 +40,10 @@ const QuestionsPage = () => {
       disablePadding
       onClick={() => navigateToPracticePage(index, question)}
     >
-      <Card variant="outlined" sx={{ width: "100%" }}>
+      <Card variant="outlined" sx={{ width: "100%", borderRadius: "10px" }}>
         <CardContent>
-          <Typography variant="h6">Question {index + 1}</Typography>
-          <Typography variant="body1">{question}</Typography>
+          <Typography variant="subtitle2">Question {index + 1}</Typography>
+          <Typography variant="body2">{question}</Typography>
         </CardContent>
       </Card>
     </ListItemButton>
@@ -45,24 +54,19 @@ const QuestionsPage = () => {
       <Box
         sx={{
           display: "flex",
-          alignContent: "left",
+          justifyContent: "space-between",
         }}
       >
         <IconButton onClick={() => navigate("/jobs/description-upload")}>
           <ArrowBackIcon></ArrowBackIcon>
         </IconButton>
-      </Box>
-      <Box>
-        <Typography
-          variant="h4"
-          component="h1"
-          sx={{
-            pl: "13px",
-          }}
-          gutterBottom
-        >
+        <Typography variant="h6" gutterBottom>
           Questions
         </Typography>
+        <Typography></Typography>
+      </Box>
+
+      <Box>
         <List>{questionsList}</List>
       </Box>
     </Container>

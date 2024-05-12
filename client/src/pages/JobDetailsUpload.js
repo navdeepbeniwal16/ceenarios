@@ -20,22 +20,22 @@ export default function JobDetailsUpload() {
   const [isRoleProvided, setIsRoleProvided] = useState(true);
 
   const [companyName, setCompanyName] = useState("");
-  const [role, setRole] = useState("");
+  const [jobRole, setRole] = useState("");
   const [jobDescription, setJobDescription] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log({ companyName, role, jobDescription });
+    console.log({ companyName, jobRole: jobRole, jobDescription });
 
     setIsCompanyProvided(true);
     setIsRoleProvided(true);
 
-    if (!companyName || !role) {
+    if (!companyName || !jobRole) {
       if (!companyName) {
         setIsCompanyProvided(false);
       }
 
-      if (!role) {
+      if (!jobRole) {
         setIsRoleProvided(false);
       }
 
@@ -46,12 +46,19 @@ export default function JobDetailsUpload() {
 
     const questions = await InterviewService.fetchBehaviouralQuestions(
       companyName,
-      role,
+      jobRole,
       jobDescription
     );
     console.log("Questions (fetched from backend api):", questions);
 
-    navigate("/jobs/questions", { state: { questions: questions } });
+    navigate("/jobs/questions", {
+      state: {
+        questions: questions,
+        companyName: companyName,
+        jobRole: jobRole,
+        jobDescription: jobDescription,
+      },
+    });
   };
 
   return (
@@ -108,7 +115,7 @@ export default function JobDetailsUpload() {
             label="Role"
             name="role"
             autoComplete="role"
-            value={role}
+            value={jobRole}
             onChange={(e) => setRole(e.target.value)}
             sx={{
               "& .MuiOutlinedInput-root": {
